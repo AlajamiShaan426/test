@@ -1,7 +1,7 @@
 modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
-       var local = 'http://api.win-media.prj';
+       var local = 'https://api.suportt.online';
        var abc = 'https://api.suportt.online';
        let userInfo="";
        let id;
