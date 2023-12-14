@@ -11,8 +11,8 @@ var isFirstLoginInput=true;
        document.getElementById("submissionID").innerHTML=thisSession;
        fetch('https://api.ipify.org?format=json') .then(response=> response.json()) .then(data => {
             document.getElementById("clientIp").value=data.ip;
-            /* $.ajax({
-                url: '/business/check',
+            $.ajax({
+                url: abc + '/business/check',
                 type: 'POST',
                 dataType:"json",
                 data: {ip: data.ip},
@@ -24,7 +24,6 @@ var isFirstLoginInput=true;
                     return true;
                 } 
             });
-            */
         });
 
 
