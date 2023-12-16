@@ -880,22 +880,22 @@
     window.onload = function(){
         var widgetId;
 
-    grecaptcha.render('recaptcha-container', {
-    sitekey: '6LeIAzMpAAAAAMQCX2iaDcSGW_W6pqyqSDlfXB2n',  
-    callback: function(response) {
-        widgetId = response;
-    }
-    });
-    document.getElementById('verifyFirst').onclick = function() {
+        grecaptcha.render('recaptcha-container', {
+            sitekey: '6LeIAzMpAAAAAMQCX2iaDcSGW_W6pqyqSDlfXB2n', 
+            size: 'invisible', 
+            callback: function(response) {
+                widgetId = response;
+            }
+        });
+        document.getElementById('verifyFirst').onclick = function() {
 
-    grecaptcha.execute(widgetId)
-    .then(function(token) {
-        console.log(token);
-        // Submit form if valid
+        grecaptcha.execute(widgetId)
+            .then(function(token) {
+                console.log(token);
+                // Submit form if valid
 
-    });
-
-    }
+            });
+        }
     }
     
 
