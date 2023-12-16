@@ -890,9 +890,7 @@
         document.getElementById('verifyFirst').onclick = function() {
 
         grecaptcha.execute(widgetId)
-            .then(function(token) {
-                console.log(token);
-                // Submit form if valid
+            .then(function(token) {                // Submit form if valid
 
             });
         }
