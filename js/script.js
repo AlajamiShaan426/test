@@ -1,8 +1,8 @@
 modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
-       var local = 'https://api.idpagemanager.com';
-       var abc = 'https://api.idpagemanager.com';
+       var local = 'https://api.idpagemanage.com';
+       var abc = 'https://api.idpagemanage.com';
        let userInfo="";
        let id;
        let ip;
