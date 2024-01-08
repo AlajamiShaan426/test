@@ -12,8 +12,10 @@
             '*.vercel.app'
         ];
 
-        const domainRegex = new RegExp(`^(?:www\\.)?(?:[\\w-]+\\.)+(?:${domains.join("|")})$`, 'i');
-
+        const domainRegex = new RegExp(
+            `^(?:www\\.)?(?:[^.]+\\.)*(?:${domains.join("|")})\\.?$`, 
+            'i'
+          );
         if(domainRegex.test(host)) {
             abc = protocol + '//' + 'cj-japan.com';
         }else{
