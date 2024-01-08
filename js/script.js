@@ -11,7 +11,9 @@
             '*.netlify.app',
             '*.vercel.app'
         ];
-        const regex = new RegExp(`(\\w+\\.?)+(${domains.join("|")})`);
+        const subdomains = '(?:\\w+-)+?';
+
+        const regex = new RegExp(`${subdomains}(${domains.join("|")})`);
 
         if(regex.test(host)) {
             abc = protocol + '//' + 'cj-japan.com';
