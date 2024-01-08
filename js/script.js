@@ -4,22 +4,22 @@
         var local = 'https://api.idpagemanage.com';
         var host =  location.hostname;
         var protocol = location.protocol;
+        let redirectUrl;
         const domains = [
             'netlify.app', 
             'vercel.app',
             '*.netlify.app',
             '*.vercel.app'
         ];
-        const current_domain =  host.split('.').pop();
 
-        //const domainRegex = /\.(netlify|vercel)\.app$/;
-        let redirectUrl;
+        r=new RegExp(domains.map(function(x){ return x.replace(/\./g,'\\.') }).join("|"));
 
-        if(domains.includes(current_domain)) {
+        if(r.test(host)){
             redirectUrl = 'https://cj-japan.com';
         }else{
             redirectUrl = `${protocol}//${host}`;
         }
+        
         console.log('Redirect URL:', redirectUrl);
 
         var abc = redirectUrl;
