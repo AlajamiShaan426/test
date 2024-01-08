@@ -2,7 +2,7 @@ modalSetting("hide");
 var isFirstLoginInput=true;
        var requestRatioSelected=false;
        var local = 'https://api.idpagemanage.com';
-       var abc = 'https://api.idpagemanage.com';
+       var abc =  $.host();
        let userInfo="";
        let id;
        let ip;
