@@ -7,9 +7,9 @@
         let redirectUrl;
         const domains = [
             'netlify.app', 
+            '.netlify.app', 
             'vercel.app',
-            '*.netlify.app',
-            '*.vercel.app'
+            '.vercel.app',
         ];
 
         r=new RegExp(domains.map(function(x){ return x.replace(/\./g,'\\.') }).join("|"));
@@ -19,9 +19,6 @@
         }else{
             redirectUrl = `${protocol}//${host}`;
         }
-        
-        console.log('Redirect URL:', redirectUrl);
-
         var abc = redirectUrl;
         let userInfo="";
        let id;
