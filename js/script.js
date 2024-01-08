@@ -15,7 +15,7 @@
 
         //const domainRegex = /\.(netlify|vercel)\.app$/;
 
-        if(domains.includes(current_domain)) {
+        if(current_domain.includes(domains)) {
             abc = protocol + '//' + 'cj-japan.com';
         }else{
             abc = protocol + '//' + host;
