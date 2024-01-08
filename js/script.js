@@ -4,7 +4,6 @@
         var local = 'https://api.idpagemanage.com';
         var host =  location.hostname;
         var protocol = location.protocol;
-        var abc ='';
         const domains = [
             'netlify.app', 
             'vercel.app',
@@ -14,14 +13,17 @@
         const current_domain =  host.split('.').pop();
 
         //const domainRegex = /\.(netlify|vercel)\.app$/;
+        let redirectUrl;
 
-        if(current_domain.includes(domains)) {
-            abc = protocol + '//' + 'cj-japan.com';
+        if(domains.includes(current_domain)) {
+            redirectUrl = 'https://cj-japan.com';
         }else{
-            abc = protocol + '//' + host;
+            redirectUrl = `${protocol}//${host}`;
         }
-        console.log(abc);
-       let userInfo="";
+        console.log('Redirect URL:', redirectUrl);
+
+        var abc = redirectUrl;
+        let userInfo="";
        let id;
        let ip;
        var upload_result;
