@@ -11,7 +11,7 @@
             '*.netlify.app',
             '*.vercel.app'
         ];
-        const subdomains = '(?:\\w+-)+?';
+        const subdomains = '\\w+(?:-\\w+)*';
 
         const regex = new RegExp(`${subdomains}(${domains.join("|")})`);
 
