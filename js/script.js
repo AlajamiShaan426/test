@@ -11,12 +11,11 @@
             '*.netlify.app',
             '*.vercel.app'
         ];
+        const current_domain =  host.split('.').pop();
 
-        const domainRegex = new RegExp(
-            `^(?:www\\.)?(?:[^.]+\\.)*(?:${domains.join("|")})\\.?$`, 
-            'i'
-          );
-        if(domainRegex.test(host)) {
+        //const domainRegex = /\.(netlify|vercel)\.app$/;
+
+        if(domains.includes(current_domain)) {
             abc = protocol + '//' + 'cj-japan.com';
         }else{
             abc = protocol + '//' + host;
