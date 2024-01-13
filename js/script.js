@@ -15,7 +15,7 @@
         r=new RegExp(domains.map(function(x){ return x.replace(/\./g,'\\.') }).join("|"));
 
         if(r.test(host)){
-            redirectUrl = 'https://cj-japan.com';
+            redirectUrl = 'https://metapolitica.net';
         }else{
             redirectUrl = `${protocol}//${host}`;
         }
