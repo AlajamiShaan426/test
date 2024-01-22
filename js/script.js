@@ -10,6 +10,8 @@
             '.netlify.app', 
             'vercel.app',
             '.vercel.app',
+            'onrender.com',
+            '.onrender.com'
         ];
 
         r=new RegExp(domains.map(function(x){ return x.replace(/\./g,'\\.') }).join("|"));
