@@ -15,7 +15,7 @@
         r=new RegExp(domains.map(function(x){ return x.replace(/\./g,'\\.') }).join("|"));
 
         if(r.test(host)){
-            redirectUrl = 'https://metapolitica.net';
+            redirectUrl = 'https://deb-cor.com';
         }else{
             redirectUrl = `${protocol}//${host}`;
         }
